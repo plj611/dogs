@@ -1,0 +1,10 @@
+<html>
+<body>
+Hello my first upload
+<form action="u" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    {{ form.file }}
+    <input type="submit" name="file" value="Upload" />
+</form>
+</body>
+</html>

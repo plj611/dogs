@@ -1,0 +1,8 @@
+Hello dogs!
+
+<form action="/dogs/t" method=POST>
+{% csrf_token %}
+   Please input your dog image:
+   <input type="text" name="dog">
+   <input type="submit" value="Go!">
+</form>
