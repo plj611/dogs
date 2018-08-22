@@ -8,7 +8,7 @@ import uuid
 from .forms import UploadFileForm
 #from .dogpredict import *
 from subprocess import check_output
-
+'''
 from .extract_bottleneck_features import *
 from keras.layers import Flatten, Dense
 from keras.models import Sequential
@@ -16,7 +16,7 @@ from keras.preprocessing import image
 from glob import glob
 import numpy as np
 import os
-'''
+
 def path_to_tensor(img_path):
     # loads RGB image as PIL.Image.Image type
     img = image.load_img(img_path, target_size=(224, 224))
@@ -27,7 +27,7 @@ def path_to_tensor(img_path):
 	
 bottleneck_feature = extract_Resnet50(path_to_tensor('c:/temp/wtime/b.jpg'))
 print('end extract')
-'''
+
 
 dog_names = \
 [
@@ -177,6 +177,7 @@ Resnet50_model.add(Flatten())
 Resnet50_model.load_weights(os.path.join(app_path, 'saved_models/weights.best.Resnet50.hdf5'))
 
 print('Hi')
+
 def path_to_tensor(img_path):
     # loads RGB image as PIL.Image.Image type
     img = image.load_img(img_path, target_size=(224, 224))
@@ -198,17 +199,24 @@ def Resnet50_predict_breed(img_path):
 	# return dog breed that is predicted by the model
     return dog_names[np.argmax(predicted_vector)]
 
+'''
+
 def index(request):
    return render(request, 't/home.html')
 
 def test(request):
    return HttpResponse(request.POST['dog'])
 
+'''
 from keras.applications.resnet50 import preprocess_input
 #b = ResNet50(weights='imagenet', include_top=False)
-  
+'''
+
 def upload_file(request):
     
+    breed = ''
+    fn = 'white.jpg'
+
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -236,7 +244,7 @@ def upload_file(request):
             b = 1/ 0
     else:
         form = UploadFileForm()
-    return render(request, 't/upload.html', {'form': form})
+    return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
 
 def success(request, file_name):
     return render(request, 't/result.html', {'fn': file_name})
