@@ -8,6 +8,8 @@ import uuid
 from .forms import UploadFileForm
 #from .dogpredict import *
 from subprocess import check_output
+import os
+
 '''
 from .extract_bottleneck_features import *
 from keras.layers import Flatten, Dense
@@ -212,10 +214,13 @@ from keras.applications.resnet50 import preprocess_input
 #b = ResNet50(weights='imagenet', include_top=False)
 '''
 
+from django.template.response import TemplateResponse
+
 def upload_file(request):
     
     breed = ''
     fn = 'white.jpg'
+    app_path = os.path.dirname(os.path.abspath(__file__))
 
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -223,17 +228,24 @@ def upload_file(request):
             #a = 1 / 0
             fn = uuid.uuid4().hex
             handle_uploaded_file(request.FILES['file'], fn)
- 
+           
+            #render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
+            t = TemplateResponse(request, 't/upload.html', {})
+            t.resolve_context({'form': form, 'fn': fn, 'breed': breed})
+            t.render()
+			
             breed = check_output(["python", os.path.join(app_path, 'dogpredict.py'), os.path.join(settings.MEDIA_ROOT, fn)])
             breed = breed.decode('utf-8')
 
             #return HttpResponseRedirect(reverse('dogs:success', kwargs={'file_name': fn, 'breed': breed}))
-            return render(request, 't/result.html', {'fn': fn, 'breed': breed})
+            #return render(request, 't/result.html', {'fn': fn, 'breed': breed})
+            return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
         else:
             b = 1/ 0
     else:
         form = UploadFileForm()
-    return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
+    #return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
+    return TemplateResponse(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
 
 def success(request, file_name):
     return render(request, 't/result.html', {'fn': file_name})
