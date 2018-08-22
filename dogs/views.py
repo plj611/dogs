@@ -223,21 +223,10 @@ def upload_file(request):
             #a = 1 / 0
             fn = uuid.uuid4().hex
             handle_uploaded_file(request.FILES['file'], fn)
-            #b = ResNet50(weights='imagenet', include_top=False)
-            #a = path_to_tensor('c:/temp/wtime/b.jpg')
-            #c = preprocess_input(a)
-            #d = settings.b.predict(c)
-            #print(a)
-            #b = extract_Resnet50(a)
+ 
             breed = check_output(["python", os.path.join(app_path, 'dogpredict.py'), os.path.join(settings.MEDIA_ROOT, fn)])
             breed = breed.decode('utf-8')
-			#"C:/Temp/wtime/dev/project1/project1/dogs/dogpredict.py"])
-            #output = check_output(["python", "C:/Temp/wtime/dev/project1/project1/dogs/a.py"])
-            #output = check_output(["python", "C:/Temp/wtime/dev/project1/project1/dogs/external.py"])
 
-            #print(output)
-			#dog_breed = Resnet50_predict_breed(settings.MEDIA_ROOT + fn)
-            #print(dog_breed)
             #return HttpResponseRedirect(reverse('dogs:success', kwargs={'file_name': fn, 'breed': breed}))
             return render(request, 't/result.html', {'fn': fn, 'breed': breed})
         else:
