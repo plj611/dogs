@@ -143,6 +143,7 @@ dog_names = \
 'Yorkshire_terrier'
 ]
 
+#app_path = '.'
 app_path = os.path.dirname(os.path.abspath(__file__))
 
 bottleneck_features = np.load(os.path.join(app_path, 'bottleneck_features/DogResnet50Data.npz'))
@@ -171,10 +172,14 @@ def Resnet50_predict_breed(img_path):
 	#print(bottleneck_feature.shape)
     # obtain predicted vector
     predicted_vector = Resnet50_model.predict(bottleneck_feature)
-#    print('2')
+    #print('2')
 	# return dog breed that is predicted by the model
-    return dog_names[np.argmax(predicted_vector)]
+    i = np.argmax(predicted_vector)
+    return (dog_names[i], str(predicted_vector[0][i] - predicted_vector[0][i] % 0.01))
 
 #print(sys.argv[1])
-print(Resnet50_predict_breed(sys.argv[1]))
+#print(Resnet50_predict_breed(sys.argv[1]))
+ret = Resnet50_predict_breed(sys.argv[1])
+#ret = Resnet50_predict_breed('a')
+print(' '.join(ret))
 #'C:/Temp/wtime/dev/project1/project1/dogs/b.jpg'))
