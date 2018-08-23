@@ -220,6 +220,7 @@ def upload_file(request):
     
     breed = ''
     fn = 'white.jpg'
+    prob = ''
     app_path = os.path.dirname(os.path.abspath(__file__))
 
     if request.method == 'POST':
@@ -230,22 +231,25 @@ def upload_file(request):
             handle_uploaded_file(request.FILES['file'], fn)
            
             #render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
-            t = TemplateResponse(request, 't/upload.html', {})
-            t.resolve_context({'form': form, 'fn': fn, 'breed': breed})
-            t.render()
+            #t = TemplateResponse(request, 't/upload.html', {})
+            #t.resolve_context({'form': form, 'fn': fn, 'breed': breed})
+            #t.render()
 			
-            breed = check_output(["python", os.path.join(app_path, 'dogpredict.py'), os.path.join(settings.MEDIA_ROOT, fn)])
-            breed = breed.decode('utf-8')
+            res = check_output(["python", os.path.join(app_path, 'dogpredict.py'), os.path.join(settings.MEDIA_ROOT, fn)])
+            res = res.decode('utf-8')
+            breed, prob = res.split(' ')
 
             #return HttpResponseRedirect(reverse('dogs:success', kwargs={'file_name': fn, 'breed': breed}))
             #return render(request, 't/result.html', {'fn': fn, 'breed': breed})
-            return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
+            return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed,
+                                                     'prob': prob})
         else:
             b = 1/ 0
     else:
         form = UploadFileForm()
-    #return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
-    return TemplateResponse(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
+    return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed, 
+	                                         'prob': prob})
+    #return TemplateResponse(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
 
 def success(request, file_name):
     return render(request, 't/result.html', {'fn': file_name})
