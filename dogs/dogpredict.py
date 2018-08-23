@@ -175,7 +175,7 @@ def Resnet50_predict_breed(img_path):
     #print('2')
 	# return dog breed that is predicted by the model
     i = np.argmax(predicted_vector)
-    return (dog_names[i], str(predicted_vector[0][i] - predicted_vector[0][i] % 0.01))
+    return (dog_names[i], str(predicted_vector[0][i] - predicted_vector[0][i] % 0.01)[:4])
 
 #print(sys.argv[1])
 #print(Resnet50_predict_breed(sys.argv[1]))
