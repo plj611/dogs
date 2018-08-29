@@ -6,6 +6,8 @@ from PIL import Image
 from django.conf import settings
 import uuid
 from .forms import UploadFileForm
+from .models import guessed_result
+from django.utils import timezone
 #from .dogpredict import *
 from subprocess import check_output
 import os
@@ -241,6 +243,7 @@ def upload_file(request):
 
             #return HttpResponseRedirect(reverse('dogs:success', kwargs={'file_name': fn, 'breed': breed}))
             #return render(request, 't/result.html', {'fn': fn, 'breed': breed})
+            guessed_result(guess_date=timezone.now(), breed=breed, accurancy=prob[:-2]).save()
             return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed,
                                                      'prob': prob})
         else:
