@@ -263,3 +263,7 @@ def handle_uploaded_file(f, file_name):
     with open(settings.MEDIA_ROOT + file_name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
+			
+def history(request):
+   results = guessed_result.objects.all()
+   return render(request, 't/history.html', {'results': results})
