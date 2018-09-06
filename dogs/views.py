@@ -230,7 +230,7 @@ def upload_file(request):
         if form.is_valid():
             #a = 1 / 0
             fn = uuid.uuid4().hex
-            handle_uploaded_file(request.FILES['file'], fn)
+            fn = handle_uploaded_file(request.FILES['file'], fn)
            
             #render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed})
             #t = TemplateResponse(request, 't/upload.html', {})
@@ -263,6 +263,12 @@ def handle_uploaded_file(f, file_name):
     with open(settings.MEDIA_ROOT + file_name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
+    img_format = "." + Image.open(settings.MEDIA_ROOT + file_name).format
+    from_name = settings.MEDIA_ROOT + file_name
+    to_name = settings.MEDIA_ROOT + file_name + img_format
+    os.rename(from_name, to_name)
+    return file_name + img_format
+    
 			
 def history(request):
    results = guessed_result.objects.all()
