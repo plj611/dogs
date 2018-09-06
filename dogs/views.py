@@ -243,7 +243,7 @@ def upload_file(request):
 
             #return HttpResponseRedirect(reverse('dogs:success', kwargs={'file_name': fn, 'breed': breed}))
             #return render(request, 't/result.html', {'fn': fn, 'breed': breed})
-            guessed_result(guess_date=timezone.now(), breed=breed, accurancy=prob[:-2]).save()
+            guessed_result(guess_date=timezone.now(), breed=breed, accurancy=prob[:-2], imagepath=fn).save()
             return render(request, 't/upload.html', {'form': form, 'fn': fn, 'breed': breed,
                                                      'prob': prob})
         else:
