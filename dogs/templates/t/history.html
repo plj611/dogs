@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-{% load static %}
-<html>
-<head>
- <title>Hello, dog!</title>
- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-</head>
-<body>
-
-  <table class="table">
+{% extends 't/base.html' %}
+{% block content %}
+   <table class='table'>
     <thead class="thead-inverse">
       <tr>
         <th>Date</th>
@@ -30,7 +23,5 @@
 	{% endfor %}
 
     </tbody>
-  </table>
-  
-</body>
-</html> 
+   </table>
+{% endblock %}
